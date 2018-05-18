@@ -1,10 +1,6 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-#include "DHT.h"
-#define DHTPIN 7
-#define DHTTYPE DHT22
 
-DHT dht(DHTPIN, DHTTYPE);
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 byte barLeft[8] = {
@@ -51,7 +47,6 @@ byte barRight[8] = {
   B11111
 };
 void setup() {
-  dht.begin();
   lcd.begin();
   lcd.createChar(0, barLeft);
   lcd.createChar(1, barFull);
@@ -75,24 +70,5 @@ void setup() {
 }
 
 void loop() {
-  delay(2000);
-  float h = dht.readHumidity();
-  float t = dht.readTemperature();
 
-  if (isnan(h) || isnan(t)) {
-    Serial.println("Failed to read from DHT sensor!");
-    return;
-  }
-
-  float hic = dht.computeHeatIndex(t, h, false);
-
-  Serial.print("Nem: ");
-  Serial.print(h);
-  Serial.print(" %\t");
-  Serial.print("Sıcaklık: ");
-  Serial.print(t);
-  Serial.print(" *C\t");
-  Serial.print("Isı endeksi: ");
-  Serial.print(hic);
-  Serial.println(" *C ");
 }
